@@ -1,2 +1,2 @@
-# rt2
-rt2
+# rt
+RayTracer
