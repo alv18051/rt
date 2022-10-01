@@ -146,11 +146,12 @@ class PointLight(object):
 
     def getShadowIntensity(self, intersect, raytracer):
         light_dir = np.subtract(self.point, intersect.point)
+        ligth_distance = np.linalg.norm(light_dir)
         light_dir = light_dir / np.linalg.norm(light_dir)
 
         shadow_intensity = 0
         shadow_intersect = raytracer.scene_intersect(intersect.point, light_dir, intersect.sceneObj)
-        if shadow_intersect:
+        if shadow_intersect.distance < ligth_distance:
             shadow_intensity = 1
 
         return shadow_intensity
