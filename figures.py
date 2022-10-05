@@ -153,5 +153,73 @@ class AABB(object):
                          normal = intersect.normal,
                          texCoords= None,
                          sceneObj = self)
+
+class Disk(object):
+    def __init__(self, position, radius, normal,  material):
+        self.plane = Plane(position, normal, material)
+        self.material = material
+        self.radius = radius
+
+    def ray_intersect(self, orig, dir):
+
+        intersect = self.plane.ray_intersect(orig, dir)
+
+        if intersect is None:
+            return None
+
+        contact = np.subtract(intersect.point, self.plane.position)
+        contact = np.linalg.norm(contact)
+
+        if contact > self.radius:
+            return None
+
+        return Intersect(distance = intersect.distance,
+                         point = intersect.point,
+                         normal = self.plane.normal,
+                         texcoords = None,
+                         sceneObj = self)
+
+class Triangle(object):
+    def __init__(self, v0, v1, v2, material):
+        self.v0 = v0
+        self.v1 = v1
+        self.v2 = v2
+        self.material = material
+
+    def ray_intersect(self, orig, dir):
+        edge1 = np.subtract(self.v1, self.v0)
+        edge2 = np.subtract(self.v2, self.v0)
+
+        h = np.cross(dir, edge2)
+        a = np.dot(edge1, h)
+
+        if a > -0.00001 and a < 0.00001:
+            return None
+
+        f = 1.0 / a
+        s = np.subtract(orig, self.v0)
+        u = f * np.dot(s, h)
+
+        if u < 0.0 or u > 1.0:
+            return None
+
+        q = np.cross(s, edge1)
+        v = f * np.dot(dir, q)
+
+        if v < 0.0 or u + v > 1.0:
+            return None
+
+        t = f * np.dot(edge2, q)
+
+        if t > 0.00001:
+            P = np.add(orig, t * np.array(dir))
+
+            return Intersect(distance = t,
+                             point = P,
+                             normal = np.cross(edge1, edge2),
+                             texCoords = None,
+                             sceneObj = self)
+
+        return None
                     
 
