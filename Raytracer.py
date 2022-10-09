@@ -36,7 +36,7 @@ rtx.scene.append(Triangle(V3(-1,0,-10), V3(0,1,-10), V3(1,0,-10), material= mirr
 
 rtx.scene.append(Triangle(V3(-5,0,-10), V3(0,-10,-10), V3(5,0,-10), material= mirror2))
 
-rtx.scene.append(Triangle(V3(3,0,-10), V3(0,5,10), V3(-3,0,-10), material= mirror3))
+rtx.scene.append(Triangle(V3(1,0,-10), V3(0,-1,10), V3(-3,0,-10), material= mirror3))
 
 
 
